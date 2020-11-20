@@ -1,1 +1,5 @@
-# spotify-plist-music-downloader
+# pra roda
+```
+npm run dev
+
+```
