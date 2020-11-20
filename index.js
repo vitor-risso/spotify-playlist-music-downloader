@@ -30,20 +30,29 @@ async function playlistList(){
 
     var content = await page.content(); 
 
+    // faz o jso aparecer no terminal
     innerText = await page.evaluate(() =>  {
         return JSON.parse(document.querySelector("body").innerText); 
     }); 
 
-   /*  console.log("innerText now contains the JSON"); */
 
-    const musics = []
+    let musics = []
 
    for(let i = 0; i < num; i++){
         musics.push(innerText.items[i].track.name)
     }
 
-console.log(musics);
 
+    let treatedMusics = []
+    musics.forEach(music => {
+        return treatedMusics.push(music.replace(/ /g, "+"))
+    });
+
+    console.log(treatedMusics)
+
+   
+
+    page.goto(`https://www.youtube.com/results?search_query=lirdade+provisoria`)
    
     
     /* await browser.close(); */
