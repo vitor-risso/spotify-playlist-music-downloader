@@ -13,6 +13,7 @@
     "dotenv": "^8.2.0",
     "nodemon": "^2.0.6",
     "puppeteer": "^5.5.0",
-    "readline-sync": "^1.4.10"
+    "readline-sync": "^1.4.10",
+    "yt-search": "^2.5.0"
   }
 }

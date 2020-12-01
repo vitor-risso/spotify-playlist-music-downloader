@@ -1,6 +1,7 @@
 require('dotenv/config');
 const nodemon = require('nodemon');
 const puppeteer = require('puppeteer');
+const yts = require( 'yt-search' )
 var readlineSync = require('readline-sync');
 
 async function playlistList(){
@@ -8,6 +9,7 @@ async function playlistList(){
     
     const browser = await puppeteer.launch({headless: true});
     const page = await browser.newPage();
+
     
     // definindo token de segurança e id da playlist
     const playlist_id = readlineSync.question('Qual O ID DA PLAYLIST? ') || process.env.PLAYLIST_ID
@@ -42,22 +44,17 @@ async function playlistList(){
         musics.push(innerText.items[i].track.name)
     }
 
-
-    let treatedMusics = []
-    musics.forEach(music => {
-        return treatedMusics.push(music.replace(/ /g, "+"))
-    });
-
-    console.log(treatedMusics)
-
-   
-
-    page.goto(`https://www.youtube.com/results?search_query=lirdade+provisoria`)
-   
-    
-    /* await browser.close(); */
-
+    musics.forEach(async music => {
+       
+        const r =  await yts(music)
  
+        const videos = r.videos.slice( 0, 1 )
+        videos.forEach( function ( v ) {
+            console.log( `${ v.title } | ${v.url} ` )
+        } )
+    })
+
+    /* await browser.close(); */
 
 }
     
