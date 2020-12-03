@@ -1,8 +1,13 @@
 require('dotenv/config');
 const nodemon = require('nodemon');
 const puppeteer = require('puppeteer');
+
+//procura as msc no yt
 const yts = require( 'yt-search' )
+
+// le as opçoes do terminal 
 var readlineSync = require('readline-sync');
+
 
 async function playlistList(){
     
@@ -37,27 +42,51 @@ async function playlistList(){
         return JSON.parse(document.querySelector("body").innerText); 
     }); 
 
-
+    //array com as musicas
     let musics = []
 
    for(let i = 0; i < num; i++){
         musics.push(innerText.items[i].track.name)
     }
 
+    //array com as url
+    const arrUrl =[]
+    
+    
     musics.forEach(async music => {
+       //procura as musicas no yt e separa o primeiro link
+       const r =  await yts(music)
+   
+       const videos = r.videos.slice( 0, 1 )
+
+       return videos
        
-        const r =  await yts(music)
- 
-        const videos = r.videos.slice( 0, 1 )
-        videos.forEach( function ( v ) {
-            console.log( `${ v.title } | ${v.url} ` )
-        } )
+       // console.log(arrUrl)
     })
+               async function getAll(){
+                   const promises = videos.map(async (video) => {
+                      return arrUrl.push(video.url)
+                    })
+                    await Promise.all(promises)
+                    return arrUrl
+                } 
+                
+                getAll()     
 
-    /* await browser.close(); */
+    console.log(arrUrl)
 
-}
     
 
+    
+    
+    await browser.close();
+    
+    console.log(`puppeteer fechou`)
+}
 
 playlistList()
+
+
+
+
+// https://www.youtube.com/watch?v=FGazI4_llt8
