@@ -38,7 +38,7 @@ async function playlistList(){
     var content = await page.content(); 
 
     // faz o jso aparecer no terminal
-    innerText = await page.evaluate(() =>  {
+    musicJson = await page.evaluate(() =>  {
         return JSON.parse(document.querySelector("body").innerText); 
     }); 
 
@@ -46,7 +46,7 @@ async function playlistList(){
     let musics = []
 
    for(let i = 0; i < num; i++){
-        musics.push(innerText.items[i].track.name)
+        musics.push(musicJson.items[i].track.name)
     }
 
     //array com as url
@@ -56,24 +56,23 @@ async function playlistList(){
     musics.forEach(async music => {
        //procura as musicas no yt e separa o primeiro link
        const r =  await yts(music)
-   
        const videos = r.videos.slice( 0, 1 )
 
-       return videos
+       
        
        // console.log(arrUrl)
+       async function getAll(){
+           const promises = videos.map(async (video) => {
+              return arrUrl.push(video.url)
+            })
+            await Promise.all(promises)
+            return arrUrl
+        } 
+        
+        console.log(arrUrl)
+        getAll()     
     })
-               async function getAll(){
-                   const promises = videos.map(async (video) => {
-                      return arrUrl.push(video.url)
-                    })
-                    await Promise.all(promises)
-                    return arrUrl
-                } 
-                
-                getAll()     
 
-    console.log(arrUrl)
 
     
 
@@ -81,7 +80,6 @@ async function playlistList(){
     
     await browser.close();
     
-    console.log(`puppeteer fechou`)
 }
 
 playlistList()
