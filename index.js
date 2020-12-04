@@ -8,6 +8,8 @@ const yts = require( 'yt-search' )
 // le as opçoes do terminal 
 var readlineSync = require('readline-sync');
 
+//array com as url
+const arrUrl =new Array()
 
 async function playlistList(){
     
@@ -43,40 +45,29 @@ async function playlistList(){
     }); 
 
     //array com as musicas
-    let musics = []
+    let musics = new Array()
 
    for(let i = 0; i < num; i++){
         musics.push(musicJson.items[i].track.name)
     }
 
-    //array com as url
-    const arrUrl =[]
     
     
+
+    const videosId =[]
     musics.forEach(async music => {
        //procura as musicas no yt e separa o primeiro link
        const r =  await yts(music)
-       const videos = r.videos.slice( 0, 1 )
+       const firstUrl =  r.videos.slice( 0, 1 )
+       console.log('aki o ' + firstUrl[0].videoId)
+     
+       return videosId.push(firstUrl[0].url)
 
-       
-       
-       // console.log(arrUrl)
-       async function getAll(){
-           const promises = videos.map(async (video) => {
-              return arrUrl.push(video.url)
-            })
-            await Promise.all(promises)
-            return arrUrl
-        } 
-        
-        console.log(arrUrl)
-        getAll()     
+      // console.log(firstUrl[0].url)
     })
 
-
-    
-
-    
+       console.log(videosId)
+   
     
     await browser.close();
     
